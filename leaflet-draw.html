@@ -1,5 +1,6 @@
 <link rel="import" href="leaflet-core.html">
 <link rel="import" href="leaflet-popup.html">
+<link rel="import" href="leaflet-point.html">
 
 <!--
 element which defines am abstract leaflet path (<a href="http://leafletjs.com/reference.html#path">Leaflet Reference</a>).
@@ -285,15 +286,9 @@ Do not use this element directly.
 				return;
 			}
 			var temp = [];
-			var i;
-			var nodes = this.children;
-			for (i = 0; i < nodes.length; i++) {
-				if (nodes[i].localName == "leaflet-point") {
-					temp.push(L.latLng(
-						nodes[i].getAttribute('latitude'),
-						nodes[i].getAttribute('longitude')
-					));
-				}
+			var nodes = Array.prototype.slice.call(Polymer.dom(this.$.points).getDistributedNodes());
+			for (var i = 0; i < nodes.length; i++) {
+				temp.push(nodes[i].getPosition());
 			}
 			this.feature.setLatLngs(temp);
 		},
